@@ -1,0 +1,7 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Software\Google\Chrome\NativeMessagingHosts\com.vimeo.downloader]
+@="E:\\Exten\\ChromeExtension\\ExtensionExample\\backend\\vimeo-download-by-playlist\\com.vimeo.downloader.json"
+
+[HKEY_CURRENT_USER\Software\Microsoft\Edge\NativeMessagingHosts\com.vimeo.downloader]
+@="E:\\Exten\\ChromeExtension\\ExtensionExample\\backend\\vimeo-download-by-playlist\\com.vimeo.downloader.json"

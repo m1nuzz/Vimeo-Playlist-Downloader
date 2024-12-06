@@ -1,0 +1,20 @@
+2024-12-06 13:57:26,990 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-12-06 13:57:26,990 - INFO - [33mPress CTRL+C to quit[0m
+2024-12-06 13:57:26,990 - INFO -  * Restarting with stat
+2024-12-06 13:57:27,134 - WARNING -  * Debugger is active!
+2024-12-06 13:57:27,137 - INFO -  * Debugger PIN: 192-373-688
+2024-12-06 13:59:58,556 - INFO - 127.0.0.1 - - [06/Dec/2024 13:59:58] "GET /ping HTTP/1.1" 200 -
+2024-12-06 13:59:58,560 - DEBUG - Running command: python E:\Exten\ChromeExtension\ExtensionExample\backend\vimeo-download-by-playlist\vimeo-dl-by-playlist.py --url https://vod-adaptive-ak.vimeocdn.com/exp=1733502484~acl=%2F5b24cf86-5fc4-4659-932c-fc7996cb058f%2F%2A~hmac=c07f384beaadad416e8f0db1739d62e492b376b60dc512fcc766849d6499ec31/5b24cf86-5fc4-4659-932c-fc7996cb058f/v2/playlist/av/primary/prot/cXNyPTE/playlist.json?omit=av1-hevc&pathsig=8c953e4f~F9Qy_AfmWu1XxNYQJaBn-jdBfLPNaccbq0qbuiVCtQs&qsr=1&rh=28H0ZC --output vimeo_download_2024-12-06T11-59-58-552Z
+2024-12-06 14:00:03,693 - ERROR - Download failed for https://vod-adaptive-ak.vimeocdn.com/exp=1733502484~acl=%2F5b24cf86-5fc4-4659-932c-fc7996cb058f%2F%2A~hmac=c07f384beaadad416e8f0db1739d62e492b376b60dc512fcc766849d6499ec31/5b24cf86-5fc4-4659-932c-fc7996cb058f/v2/playlist/av/primary/prot/cXNyPTE/playlist.json?omit=av1-hevc&pathsig=8c953e4f~F9Qy_AfmWu1XxNYQJaBn-jdBfLPNaccbq0qbuiVCtQs&qsr=1&rh=28H0ZC: 
+2024-12-06 14:00:03,694 - INFO - 127.0.0.1 - - [06/Dec/2024 14:00:03] "POST /download HTTP/1.1" 200 -
+2024-12-06 14:00:38,646 - INFO - 127.0.0.1 - - [06/Dec/2024 14:00:38] "GET /ping HTTP/1.1" 200 -
+2024-12-06 14:00:38,650 - INFO - 127.0.0.1 - - [06/Dec/2024 14:00:38] "POST /download HTTP/1.1" 200 -
+2024-12-06 14:01:42,997 - INFO - 127.0.0.1 - - [06/Dec/2024 14:01:42] "GET /ping HTTP/1.1" 200 -
+2024-12-06 14:01:43,000 - DEBUG - Running command: python E:\Exten\ChromeExtension\ExtensionExample\backend\vimeo-download-by-playlist\vimeo-dl-by-playlist.py --url https://vod-adaptive-ak.vimeocdn.com/exp=1733502613~acl=%2F5b24cf86-5fc4-4659-932c-fc7996cb058f%2F%2A~hmac=e86710699adfacfb3166604ef0d678d7cbcf5293401a0bdc18e50c3f0c9ed900/5b24cf86-5fc4-4659-932c-fc7996cb058f/v2/playlist/av/primary/prot/cXNyPTE/playlist.json?omit=av1-hevc&pathsig=8c953e4f~F9Qy_AfmWu1XxNYQJaBn-jdBfLPNaccbq0qbuiVCtQs&qsr=1&rh=28H0ZC --output vimeo_download_2024-12-06T12-01-42-994Z
+2024-12-06 14:01:46,599 - ERROR - Download failed for https://vod-adaptive-ak.vimeocdn.com/exp=1733502613~acl=%2F5b24cf86-5fc4-4659-932c-fc7996cb058f%2F%2A~hmac=e86710699adfacfb3166604ef0d678d7cbcf5293401a0bdc18e50c3f0c9ed900/5b24cf86-5fc4-4659-932c-fc7996cb058f/v2/playlist/av/primary/prot/cXNyPTE/playlist.json?omit=av1-hevc&pathsig=8c953e4f~F9Qy_AfmWu1XxNYQJaBn-jdBfLPNaccbq0qbuiVCtQs&qsr=1&rh=28H0ZC: 
+2024-12-06 14:01:46,600 - INFO - 127.0.0.1 - - [06/Dec/2024 14:01:46] "POST /download HTTP/1.1" 200 -
+2024-12-06 14:05:48,214 - INFO -  * Detected change in 'E:\\Exten\\ChromeExtension\\ExtensionExample\\backend\\vimeo-download-by-playlist\\server.py', reloading
+2024-12-06 14:05:48,273 - INFO -  * Restarting with stat
+2024-12-06 14:06:05,105 - INFO -  * Restarting with stat
+2024-12-06 14:06:52,580 - INFO -  * Restarting with stat

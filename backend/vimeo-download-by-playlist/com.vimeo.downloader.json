@@ -1,0 +1,9 @@
+{
+  "name": "com.vimeo.downloader",
+  "description": "Vimeo Playlist Downloader Native Host",
+  "path": "native_host.bat",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://*"
+  ]
+}

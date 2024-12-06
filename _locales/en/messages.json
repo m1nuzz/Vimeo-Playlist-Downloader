@@ -1,0 +1,22 @@
+{
+  "appName":  {
+    "message": "Vimeo Playlist Downloader",
+    "description": "The name of the extension"
+  },
+  "appDescription":  {
+    "message": "Download videos from Vimeo playlists",
+    "description": "The description of the extension"
+  },
+  "downloadPrompt":  {
+    "message": "Would you like to download the videos now?",
+    "description": "Prompt shown when asking to download videos"
+  },
+  "yes":  {
+    "message": "Yes",
+    "description": "Affirmative button text"
+  },
+  "no":  {
+    "message": "No",
+    "description": "Negative button text"
+  }
+}
