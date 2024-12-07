@@ -26,7 +26,7 @@ if not exist "venv" (
     )
 )
 
-:: Activate virtual environment
+:: Activate virtual environment and verify activation
 echo [%date% %time%] Activating virtual environment... >> download_system.log
 call venv\Scripts\activate.bat
 if errorlevel 1 (
@@ -36,13 +36,16 @@ if errorlevel 1 (
     exit /b 1
 )
 
+:: Verify virtual environment is active
+python -c "import sys; print('Virtual environment:', sys.prefix)" >> download_system.log
+
 :: Upgrade pip
 echo [%date% %time%] Upgrading pip... >> download_system.log
-python -m pip install --upgrade pip
+venv\Scripts\python.exe -m pip install --upgrade pip
 
 :: Install dependencies
 echo [%date% %time%] Installing dependencies... >> download_system.log
-pip install -r requirements.txt
+venv\Scripts\pip.exe install -r requirements.txt
 
 :: Start server
 echo.
@@ -50,7 +53,7 @@ echo [%date% %time%] Starting server... >> download_system.log
 echo Starting Vimeo Downloader Server...
 echo Please do not close this window while downloading videos
 echo.
-python server.py
+venv\Scripts\python.exe server.py
 
 :: Deactivate virtual environment on exit
 echo [%date% %time%] Server stopped. Deactivating virtual environment... >> download_system.log
