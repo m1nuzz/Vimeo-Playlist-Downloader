@@ -14,19 +14,11 @@ from logger_config import setup_logger
 logger = setup_logger('downloader')
 
 def sanitize_filename(filename):
-    """Очищает имя файла от недопустимых символов и обрезает длинные имена"""
+    """Очищает имя файла от недопустимых символов"""
     # Заменяем недопустимые символы на underscore
-    invalid_chars = r'[<>:"/\\|?*]'
-    filename = re.sub(invalid_chars, '_', filename)
-    
-    # Удаляем точки в конце имени файла (Windows не позволяет)
-    filename = filename.rstrip('.')
-    
-    # Ограничиваем длину имени файла (Windows MAX_PATH = 260)
-    max_length = 200  # Оставляем место для расширения и пути
-    if len(filename) > max_length:
-        filename = filename[:max_length]
-    
+    invalid_chars = '<>:"/\\|?*'
+    for char in invalid_chars:
+        filename = filename.replace(char, '_')
     return filename.strip()
 
 def download_video(url, output_path, video_title=None, html_content=None):
