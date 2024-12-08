@@ -9,71 +9,41 @@ import sys
 import traceback
 import argparse
 from logger_config import setup_logger
-import time
 
 # Создаем логгер
 logger = setup_logger('downloader')
 
 def sanitize_filename(filename):
-    """Очищает имя файла от недопустимых символов Windows"""
-    # Список недопустимых символов Windows
-    invalid_chars = ['\\', '/', ':', '*', '?', '"', '<', '>', '|']
-    filename = ''.join(char if char not in invalid_chars else '_' for char in filename)
+    """Очищает имя файла от недопустимых символов и обрезает длинные имена"""
+    # Заменяем недопустимые символы на underscore
+    invalid_chars = r'[<>:"/\\|?*]'
+    filename = re.sub(invalid_chars, '_', filename)
     
-    # Заменяем множественные пробелы одним
-    filename = ' '.join(filename.split())
+    # Удаляем точки в конце имени файла (Windows не позволяет)
+    filename = filename.rstrip('.')
     
-    # Обрезаем длину имени файла
-    if len(filename) > 100:  
-        filename = filename[:97] + "..."
+    # Ограничиваем длину имени файла (Windows MAX_PATH = 260)
+    max_length = 200  # Оставляем место для расширения и пути
+    if len(filename) > max_length:
+        filename = filename[:max_length]
     
-    # Убираем пробелы в начале и конце
-    filename = filename.strip()
-    
-    # Если имя пустое после очистки, используем значение по умолчанию
-    if not filename:
-        filename = "video"
-        
-    return filename
-
-def extract_title_from_html(html_content):
-    # Implement your HTML title extraction logic here
-    pass
+    return filename.strip()
 
 def download_video(url, output_path, video_title=None, html_content=None):
+    """Скачивает видео по URL"""
     try:
-        if not video_title and html_content:
-            video_title = extract_title_from_html(html_content)
-        
-        if not video_title:
-            video_title = "video"
-            
-        # Очищаем имя файла в самом начале
-        original_title = video_title
-        video_title = sanitize_filename(video_title)
-        if original_title != video_title:
-            logger.info(f"Original title '{original_title}' was sanitized to '{video_title}'")
-            
-        # Создаем основную директорию для видео
-        video_dir = os.path.join(output_path, video_title)
-        try:
-            os.makedirs(video_dir, exist_ok=True)
-        except Exception as e:
-            logger.error(f"Failed to create directory '{video_dir}': {str(e)}")
-            raise
-
         logger.info(f'Starting download for URL: {url}')
-        logger.info(f'Output path: {video_dir}')
+        logger.info(f'Output path: {output_path}')
+
+        # Создаем директорию для видео (без дополнительной вложенной папки)
+        video_title = sanitize_filename(video_title) if video_title else 'untitled_video'
+        video_dir = output_path  # Используем напрямую переданный путь
+        os.makedirs(video_dir, exist_ok=True)
+        logger.info(f'Using video directory: {video_dir}')
 
         # Создаем временную директорию
         temp_dir = os.path.join(video_dir, 'temp')
-        try:
-            os.makedirs(temp_dir, exist_ok=True)
-        except Exception as e:
-            logger.error(f"Failed to create temp directory '{temp_dir}': {str(e)}")
-            raise
-
-        logger.info(f'Created temp directory: {temp_dir}')
+        os.makedirs(temp_dir, exist_ok=True)
 
         # Проверяем наличие необходимых инструментов
         try:
@@ -164,42 +134,14 @@ def download_video(url, output_path, video_title=None, html_content=None):
         ], check=True)
 
         # Объединяем видео и аудио
-        output_filename = f"{video_title}_{best_video['video_res']}.mp4"
-        output_file = os.path.join(video_dir, output_filename)
+        output_file = os.path.join(video_dir, f"{video_title}_{best_video['video_res']}.mp4")
         logger.info(f"Merging video and audio to: {output_file}")
-        
-        try:
-            # Add a small delay before FFmpeg operation
-            time.sleep(1)
-            
-            # First verify input files exist and are not empty
-            if not (os.path.exists(video_output) and os.path.exists(audio_output)):
-                raise Exception("Input video or audio file missing")
-                
-            if os.path.getsize(video_output) == 0 or os.path.getsize(audio_output) == 0:
-                raise Exception("Input video or audio file is empty")
-            
-            # Run FFmpeg with more detailed error output
-            result = subprocess.run([
-                'ffmpeg',
-                '-i', video_output,
-                '-i', audio_output,
-                '-c', 'copy',
-                output_file
-            ], capture_output=True, text=True)
-            
-            if result.returncode != 0:
-                raise Exception(f"FFmpeg error: {result.stderr}")
-                
-            # Verify output file was created and is not empty
-            if not os.path.exists(output_file) or os.path.getsize(output_file) == 0:
-                raise Exception("Output file was not created or is empty")
-                
-        except Exception as e:
-            logger.error(f"Error during video merge: {str(e)}")
-            if os.path.exists(output_file):
-                os.remove(output_file)
-            raise
+        subprocess.run([
+            'ffmpeg', '-v', 'quiet', '-stats', '-y',
+            '-i', video_output,
+            '-i', audio_output,
+            '-c', 'copy', output_file
+        ], check=True)
 
         # Очищаем временные файлы
         logger.info("Cleaning up temporary files")
