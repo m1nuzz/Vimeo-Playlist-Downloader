@@ -15,19 +15,26 @@ import time
 logger = setup_logger('downloader')
 
 def sanitize_filename(filename):
-    """Очищает имя файла от недопустимых символов"""
-    # Replace problematic characters
-    invalid_chars = ['<', '>', ':', '"', '/', '\\', '|', '?', '*']
+    """Очищает имя файла от недопустимых символов Windows"""
+    # Список недопустимых символов Windows
+    invalid_chars = ['\\', '/', ':', '*', '?', '"', '<', '>', '|']
     filename = ''.join(char if char not in invalid_chars else '_' for char in filename)
     
-    # Replace multiple spaces with single space
+    # Заменяем множественные пробелы одним
     filename = ' '.join(filename.split())
     
-    # Limit filename length to avoid path length issues
-    if len(filename) > 200:
-        filename = filename[:197] + "..."
+    # Обрезаем длину имени файла
+    if len(filename) > 100:  
+        filename = filename[:97] + "..."
+    
+    # Убираем пробелы в начале и конце
+    filename = filename.strip()
+    
+    # Если имя пустое после очистки, используем значение по умолчанию
+    if not filename:
+        filename = "video"
         
-    return filename.strip()
+    return filename
 
 def extract_title_from_html(html_content):
     # Implement your HTML title extraction logic here
@@ -47,6 +54,7 @@ def download_video(url, output_path, video_title=None, html_content=None):
         if original_title != video_title:
             logger.info(f"Original title '{original_title}' was sanitized to '{video_title}'")
             
+        # Создаем основную директорию для видео
         video_dir = os.path.join(output_path, video_title)
         try:
             os.makedirs(video_dir, exist_ok=True)
@@ -55,11 +63,17 @@ def download_video(url, output_path, video_title=None, html_content=None):
             raise
 
         logger.info(f'Starting download for URL: {url}')
-        logger.info(f'Output path: {output_path}')
+        logger.info(f'Output path: {video_dir}')
 
         # Создаем временную директорию
         temp_dir = os.path.join(video_dir, 'temp')
-        os.makedirs(temp_dir, exist_ok=True)
+        try:
+            os.makedirs(temp_dir, exist_ok=True)
+        except Exception as e:
+            logger.error(f"Failed to create temp directory '{temp_dir}': {str(e)}")
+            raise
+
+        logger.info(f'Created temp directory: {temp_dir}')
 
         # Проверяем наличие необходимых инструментов
         try:
@@ -150,7 +164,8 @@ def download_video(url, output_path, video_title=None, html_content=None):
         ], check=True)
 
         # Объединяем видео и аудио
-        output_file = os.path.join(video_dir, f"{video_title}_{best_video['video_res']}.mp4")
+        output_filename = f"{video_title}_{best_video['video_res']}.mp4"
+        output_file = os.path.join(video_dir, output_filename)
         logger.info(f"Merging video and audio to: {output_file}")
         
         try:
